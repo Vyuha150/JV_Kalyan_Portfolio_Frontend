@@ -84,9 +84,18 @@ const AchievementsSection = () => {
   const getImageUrl = (imagePath: string) => {
     if (imagePath.startsWith("/uploads/")) {
       // This is a backend uploaded image
-      const backendUrl =
-        import.meta.env.VITE_API_BASE_URL?.replace("/api", "") ||
-        "http://localhost:5000";
+      let backendUrl =
+        import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
+      // If someone set the backend URL without protocol (e.g. api.jvkalyan.com/api), add https:// by default
+      if (!/^https?:\/\//i.test(backendUrl)) {
+        backendUrl = `https://${backendUrl}`;
+      }
+
+      // Remove a single trailing '/api' segment if present (only at the end)
+      backendUrl = backendUrl.replace(/\/api\/?$/i, "");
+
+      // Ensure no double slashes when concatenating
       return `${backendUrl}${imagePath}`;
     }
     // This is a frontend public image (fallback)
