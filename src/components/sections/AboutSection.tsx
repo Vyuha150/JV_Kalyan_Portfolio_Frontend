@@ -44,11 +44,11 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="about" ref={ref} className="py-16 md:py-32 relative">
+    <section id="about" ref={ref} className="py-8 md:py-32 relative">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/50 to-background" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -56,10 +56,10 @@ const AboutSection = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12 md:mb-20"
         >
-          <h2 className="text-5xl md:text-6xl font-bold font-display mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-display mb-4 md:mb-6">
             About <span className="text-primary">J V Kalyan</span>
           </h2>
-          <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 max-w-5xl mx-auto items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}

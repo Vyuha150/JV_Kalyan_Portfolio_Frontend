@@ -226,9 +226,14 @@ const MediaSection = () => {
           <p className="text-muted-foreground mb-6">
             Interested in having J V Kalyan speak at your event?
           </p>
-          <button className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300">
+          <a
+            href="https://wa.me/917661073573?text=Hi%20J%20V%20Kalyan,%20I%20would%20like%20to%20discuss%20a%20speaking%20engagement%20opportunity.%20Could%20we%20schedule%20a%20call%20to%20discuss%20the%20details?"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300"
+          >
             Book Speaking Engagement
-          </button>
+          </a>
         </motion.div>
       </div>
     </section>

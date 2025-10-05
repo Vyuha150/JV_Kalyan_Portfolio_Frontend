@@ -138,7 +138,11 @@ const SkillsSection = () => {
   };
 
   return (
-    <section id="skills" ref={ref} className="py-32 relative overflow-hidden">
+    <section
+      id="skills"
+      ref={ref}
+      className="py-8 md:py-32 relative overflow-hidden"
+    >
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/5 to-background" />
 
@@ -170,18 +174,18 @@ const SkillsSection = () => {
         ))}
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-8 md:mb-20"
         >
-          <h2 className="text-5xl md:text-6xl font-bold font-display mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-display mb-4 md:mb-6">
             Skills & <span className="text-primary">Technologies</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             A comprehensive toolkit spanning technology, strategy, and
             leadership. Combining technical expertise with strategic vision to
             drive innovation.
