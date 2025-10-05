@@ -137,7 +137,12 @@ export const skillsService = {
   getAllSkillCategories: async (): Promise<SkillCategory[]> => {
     try {
       const response = await apiClient.get("/skills");
-      return response.data;
+      const data = response.data;
+      // Support different response shapes: array or wrapped object
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.skillCategories)) return data.skillCategories;
+      if (Array.isArray(data?.data)) return data.data;
+      return [];
     } catch (error) {
       console.error("Error fetching skill categories:", error);
       throw error;

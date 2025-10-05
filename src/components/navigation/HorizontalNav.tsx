@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ExternalLink } from "lucide-react";
+import HamburgerMenu from "./HamburgerMenu";
 
 interface NavItem {
   id: string;
@@ -157,15 +158,9 @@ const HorizontalNav = () => {
             </motion.a>
           </motion.div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Hamburger Menu */}
           <div className="md:hidden">
-            <button className="p-2 text-foreground">
-              <div className="w-6 h-5 flex flex-col justify-between">
-                <span className="block h-0.5 w-full bg-current"></span>
-                <span className="block h-0.5 w-full bg-current"></span>
-                <span className="block h-0.5 w-full bg-current"></span>
-              </div>
-            </button>
+            <HamburgerMenu />
           </div>
         </div>
       </div>

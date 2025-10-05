@@ -13,17 +13,17 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center overflow-hidden bg-background"
+      className="relative min-h-screen md:min-h-screen flex items-center overflow-hidden bg-background"
     >
       {/* Clean minimal background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/5 to-background" />
 
       {/* Main Content Grid */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-20">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)]">
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center min-h-[calc(70vh-4rem)] sm:min-h-[calc(100vh-5rem)]">
           {/* Left Content */}
           <motion.div
-            className="space-y-8"
+            className="space-y-8 order-2 md:order-1"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}

@@ -70,7 +70,12 @@ const SkillsAdmin: React.FC = () => {
     try {
       setLoading(true);
       const categories = await skillsService.getAllSkillCategories();
-      setSkillCategories(categories);
+      if (Array.isArray(categories)) {
+        setSkillCategories(categories);
+      } else {
+        console.warn("Unexpected skills response shape:", categories);
+        setSkillCategories([]);
+      }
     } catch (error) {
       console.error("Failed to fetch skill categories:", error);
       toast({
@@ -90,8 +95,9 @@ const SkillsAdmin: React.FC = () => {
   const handleCreate = async (formData: SkillFormData) => {
     try {
       // Convert skills string to array
+      // Support comma, semicolon or newline separated skills entered by admin
       const skillsArray = formData.skills
-        .split(",")
+        .split(/[,;\n]+/)
         .map((skill: string) => skill.trim())
         .filter((skill: string) => skill.length > 0);
 
@@ -124,8 +130,9 @@ const SkillsAdmin: React.FC = () => {
 
     try {
       // Convert skills string to array
+      // Support comma, semicolon or newline separated skills entered by admin
       const skillsArray = formData.skills
-        .split(",")
+        .split(/[,;\n]+/)
         .map((skill: string) => skill.trim())
         .filter((skill: string) => skill.length > 0);
 
@@ -173,6 +180,11 @@ const SkillsAdmin: React.FC = () => {
       skills: category.skills.join(", "),
       order: category.order.toString(),
     };
+    // Debug: log the payload that will be passed to ItemForm (open browser console to inspect)
+    console.debug(
+      "SkillsAdmin: opening edit form with:",
+      categoryWithStringSkills
+    );
     setEditingCategory(categoryWithStringSkills);
     setIsFormOpen(true);
   };
@@ -230,6 +242,8 @@ const SkillsAdmin: React.FC = () => {
       _id: editingCategory._id,
       title: editingCategory.title,
       description: `Skills: ${editingCategory.skills}`,
+      // Provide the raw comma/newline-separated skills string so ItemForm can prefill the textarea
+      skills: editingCategory.skills,
       icon: editingCategory.icon,
       type: editingCategory.color,
       order: parseInt(editingCategory.order),

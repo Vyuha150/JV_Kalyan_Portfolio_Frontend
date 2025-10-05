@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Save, X, Upload, Image as ImageIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -52,9 +52,16 @@ const ItemForm: React.FC<ItemFormProps> = ({
   fields,
   title,
 }) => {
-  const [formData, setFormData] = useState<
-    Record<string, string | number | boolean>
-  >(() => {
+  // Debug incoming props
+  console.debug(
+    "ItemForm props => item:",
+    item,
+    "fields:",
+    fields,
+    "isOpen:",
+    isOpen
+  );
+  const makeInitialData = React.useCallback(() => {
     const initialData: Record<string, string | number | boolean> = {};
     fields.forEach((field) => {
       if (item && field.name in item) {
@@ -64,20 +71,37 @@ const ItemForm: React.FC<ItemFormProps> = ({
         } else if (typeof value === "boolean") {
           initialData[field.name] = value;
         } else {
-          initialData[field.name] = String(value || "");
+          if (Array.isArray(value)) {
+            // convert arrays (e.g., skills) to a readable comma-separated string
+            initialData[field.name] = (value as unknown[]).join(", ");
+          } else {
+            initialData[field.name] = String(value || "");
+          }
         }
       } else {
         initialData[field.name] = field.type === "number" ? 0 : "";
       }
     });
     return initialData;
-  });
+  }, [fields, item]);
+
+  const [formData, setFormData] =
+    useState<Record<string, string | number | boolean>>(makeInitialData);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(
     item?.image || null
   );
   const [isLoading, setIsLoading] = useState(false);
+
+  // Reset form when item, fields or isOpen changes (so edit pre-fills correctly)
+  useEffect(() => {
+    const initial = makeInitialData();
+    setFormData(initial);
+    setSelectedFile(null);
+    setImagePreview(item?.image || null);
+    console.debug("ItemForm: initial formData ->", initial);
+  }, [item, isOpen, fields, makeInitialData]);
 
   const handleInputChange = (
     name: string,

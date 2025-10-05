@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Settings, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { signOut } from "@/lib/auth";
 
 interface AdminHeaderProps {
   title?: string;
@@ -11,8 +12,11 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({
   title = "Admin Dashboard",
 }) => {
   const handleLogout = () => {
-    // Navigate to the index/home page
-    window.location.href = "/";
+    // Call backend signout to clear HttpOnly cookie then redirect to login
+    (async () => {
+      await signOut();
+      window.location.href = "/admin/login";
+    })();
   };
 
   return (
