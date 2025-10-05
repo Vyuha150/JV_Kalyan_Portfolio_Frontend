@@ -21,9 +21,9 @@ const HeroSection = () => {
       {/* Main Content Grid */}
       <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center min-h-[calc(70vh-4rem)] sm:min-h-[calc(100vh-5rem)]">
-          {/* Left Content */}
+          {/* Content - Left on desktop, second on mobile */}
           <motion.div
-            className="space-y-8 order-1 md:order-2"
+            className="space-y-8 order-2 lg:order-1"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -112,9 +112,9 @@ const HeroSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Professional Image */}
+          {/* Image - Right on desktop, first on mobile */}
           <motion.div
-            className="relative flex justify-center lg:justify-start"
+            className="relative flex justify-center lg:justify-start order-1 lg:order-2"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
