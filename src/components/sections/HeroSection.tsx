@@ -23,7 +23,7 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center min-h-[calc(70vh-4rem)] sm:min-h-[calc(100vh-5rem)]">
           {/* Left Content */}
           <motion.div
-            className="space-y-8 order-2 md:order-1"
+            className="space-y-8 order-1 md:order-2"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
