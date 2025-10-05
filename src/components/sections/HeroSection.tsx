@@ -13,7 +13,7 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden bg-background"
+      className="relative min-h-[80vh] md:min-h-screen flex items-center overflow-hidden bg-background mt-8"
     >
       {/* Clean minimal background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/5 to-background" />

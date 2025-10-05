@@ -72,7 +72,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
       <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
         <CardContent className="p-0 flex flex-col h-full">
           {item.image && (
-            <div className="relative h-48 bg-muted flex-shrink-0">
+            <div className="relative h-32 sm:h-40 md:h-48 bg-muted flex-shrink-0">
               <img
                 src={imageUrl}
                 alt={getItemTitle()}
@@ -81,59 +81,59 @@ const ItemCard: React.FC<ItemCardProps> = ({
                   e.currentTarget.src = "/placeholder.svg";
                 }}
               />
-              <div className="absolute top-2 right-2 flex gap-2">
+              <div className="absolute top-2 right-2 flex gap-1 sm:gap-2">
                 <Button
                   size="sm"
                   variant="secondary"
                   onClick={() => onEdit(item)}
-                  className="h-8 w-8 p-0"
+                  className="h-7 w-7 sm:h-8 sm:w-8 p-0"
                 >
-                  <Edit size={14} />
+                  <Edit size={12} className="sm:w-[14px] sm:h-[14px]" />
                 </Button>
                 <Button
                   size="sm"
                   variant="destructive"
                   onClick={() => onDelete(itemId)}
-                  className="h-8 w-8 p-0"
+                  className="h-7 w-7 sm:h-8 sm:w-8 p-0"
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size={12} className="sm:w-[14px] sm:h-[14px]" />
                 </Button>
               </div>
             </div>
           )}
 
-          <div className="p-4 flex-1 flex flex-col">
+          <div className="p-3 sm:p-4 flex-1 flex flex-col">
             <div className="flex items-start justify-between mb-2">
-              <h3 className="font-semibold text-lg line-clamp-2">
+              <h3 className="font-semibold text-base sm:text-lg line-clamp-2 pr-2">
                 {getItemTitle()}
               </h3>
               {!item.image && (
-                <div className="flex gap-2 ml-2">
+                <div className="flex gap-1 sm:gap-2 flex-shrink-0">
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => onEdit(item)}
-                    className="h-8 w-8 p-0"
+                    className="h-7 w-7 sm:h-8 sm:w-8 p-0"
                   >
-                    <Edit size={14} />
+                    <Edit size={12} className="sm:w-[14px] sm:h-[14px]" />
                   </Button>
                   <Button
                     size="sm"
                     variant="destructive"
                     onClick={() => onDelete(itemId)}
-                    className="h-8 w-8 p-0"
+                    className="h-7 w-7 sm:h-8 sm:w-8 p-0"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size={12} className="sm:w-[14px] sm:h-[14px]" />
                   </Button>
                 </div>
               )}
             </div>
 
-            <p className="text-muted-foreground text-sm line-clamp-3 mb-3 flex-1">
+            <p className="text-muted-foreground text-xs sm:text-sm line-clamp-3 mb-3 flex-1">
               {item.description}
             </p>
 
-            <div className="flex flex-wrap gap-2 mt-auto">
+            <div className="flex flex-wrap gap-1 sm:gap-2 mt-auto">
               {item.type && <Badge variant="secondary">{item.type}</Badge>}
               {item.year && <Badge variant="outline">{item.year}</Badge>}
               {item.role && <Badge variant="outline">{item.role}</Badge>}

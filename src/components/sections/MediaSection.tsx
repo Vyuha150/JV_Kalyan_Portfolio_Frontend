@@ -15,7 +15,7 @@ import { mediaService, Media } from "../../services/api";
 
 const MediaSection = () => {
   const { ref, inView } = useInView({
-    threshold: 0.3,
+    threshold: 0.1,
     triggerOnce: true,
   });
 
@@ -124,15 +124,15 @@ const MediaSection = () => {
   };
 
   return (
-    <section id="media" ref={ref} className="py-32 relative">
+    <section id="media" ref={ref} className="py-12 md:py-32 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/50 to-background" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: inView ? 0 : 0.2 }}
+          className="text-center mb-8 md:mb-16"
         >
           <h2 className="text-5xl md:text-6xl font-bold font-display mb-6">
             Leadership <span className="text-primary">Talks</span>
@@ -163,7 +163,7 @@ const MediaSection = () => {
 
         {/* Media Grid */}
         {!loading && (
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             {mediaItems.map((item, index) => (
               <motion.a
                 key={item._id || item.title}
@@ -171,8 +171,11 @@ const MediaSection = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 50 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.6,
+                  delay: (inView ? 0 : 0.3) + index * 0.2,
+                }}
                 className="card-glass overflow-hidden group cursor-pointer block"
                 style={{
                   transition: "all 0.5s ease",
@@ -219,9 +222,9 @@ const MediaSection = () => {
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-center mt-12"
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: inView ? 0.6 : 0.8 }}
+          className="text-center mt-8 md:mt-12"
         >
           <p className="text-muted-foreground mb-6">
             Interested in having J V Kalyan speak at your event?

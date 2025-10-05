@@ -14,7 +14,7 @@ const AdminPanel = () => {
     <div className="min-h-screen bg-background">
       <AdminHeader title="Portfolio Admin" />
 
-      <div className="max-w-7xl mx-auto px-6 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -25,22 +25,36 @@ const AdminPanel = () => {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4">
-              <TabsTrigger value="achievements" className="gap-2">
-                Achievements
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-0 h-auto p-1">
+              <TabsTrigger
+                value="achievements"
+                className="gap-1 sm:gap-2 text-xs sm:text-sm py-2"
+              >
+                <span className="hidden sm:inline">Achievements</span>
+                <span className="sm:hidden">Achieve</span>
               </TabsTrigger>
-              <TabsTrigger value="experiences" className="gap-2">
-                Experience
+              <TabsTrigger
+                value="experiences"
+                className="gap-1 sm:gap-2 text-xs sm:text-sm py-2"
+              >
+                <span className="hidden sm:inline">Experience</span>
+                <span className="sm:hidden">Exp</span>
               </TabsTrigger>
-              <TabsTrigger value="media" className="gap-2">
+              <TabsTrigger
+                value="media"
+                className="gap-1 sm:gap-2 text-xs sm:text-sm py-2"
+              >
                 Media
               </TabsTrigger>
-              <TabsTrigger value="skills" className="gap-2">
+              <TabsTrigger
+                value="skills"
+                className="gap-1 sm:gap-2 text-xs sm:text-sm py-2"
+              >
                 Skills
               </TabsTrigger>
             </TabsList>
 
-            <div className="mt-8">
+            <div className="mt-4 sm:mt-8">
               <TabsContent value="achievements" className="mt-0">
                 <AchievementsAdmin />
               </TabsContent>

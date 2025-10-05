@@ -6,7 +6,7 @@ import { skillsService, SkillCategory } from "../../services/api";
 
 const SkillsSection = () => {
   const { ref, inView } = useInView({
-    threshold: 0.3,
+    threshold: 0.1, // Reduced threshold for better mobile detection
     triggerOnce: true,
   });
 
@@ -24,88 +24,104 @@ const SkillsSection = () => {
     Cloud: <Cloud size={32} />,
   };
 
-  // Fetch skills data from API
+  // Fetch skills data from API with mobile-friendly timeout
   useEffect(() => {
+    const setFallbackData = () => {
+      setSkillCategories([
+        {
+          icon: "Brain",
+          title: "AI & Data Science",
+          skills: [
+            "NLP",
+            "Scikit-Learn",
+            "Machine Learning",
+            "Data Analysis",
+            "Predictive Modeling",
+          ],
+          color: "primary",
+          order: 1,
+        },
+        {
+          icon: "Code2",
+          title: "Programming & Tech",
+          skills: ["Python", "RPA", "Azure", "Linux", "API Development"],
+          color: "secondary",
+          order: 2,
+        },
+        {
+          icon: "Users",
+          title: "Leadership & Strategy",
+          skills: [
+            "Strategic Planning",
+            "Team Management",
+            "Organizational Development",
+            "Project Management",
+          ],
+          color: "primary",
+          order: 3,
+        },
+        {
+          icon: "Megaphone",
+          title: "Public Speaking",
+          skills: [
+            "Conference Speaking",
+            "Workshop Facilitation",
+            "Entrepreneurship Training",
+            "Mentoring",
+          ],
+          color: "secondary",
+          order: 4,
+        },
+        {
+          icon: "Database",
+          title: "Consulting",
+          skills: [
+            "Business Strategy",
+            "Process Optimization",
+            "Digital Transformation",
+            "Innovation Management",
+          ],
+          color: "primary",
+          order: 5,
+        },
+        {
+          icon: "Cloud",
+          title: "Technology Stack",
+          skills: [
+            "Cloud Computing",
+            "Automation",
+            "Integration",
+            "Scalable Solutions",
+          ],
+          color: "secondary",
+          order: 6,
+        },
+      ]);
+    };
+
     const fetchSkillsData = async () => {
+      const timeoutId = setTimeout(() => {
+        setError("Connection timeout - using offline data");
+        setFallbackData();
+        setLoading(false);
+      }, 5000);
+
       try {
         setLoading(true);
         const data = await skillsService.getAllSkillCategories();
-        setSkillCategories(data);
-        setError(null);
+        clearTimeout(timeoutId);
+
+        if (Array.isArray(data) && data.length > 0) {
+          setSkillCategories(data);
+          setError(null);
+        } else {
+          throw new Error("No data received");
+        }
       } catch (err) {
+        clearTimeout(timeoutId);
         console.error("Failed to fetch skills data:", err);
-        setError("Failed to load skills data");
-        // Fallback to hardcoded data if API fails
-        setSkillCategories([
-          {
-            icon: "Brain",
-            title: "AI & Data Science",
-            skills: [
-              "NLP",
-              "Scikit-Learn",
-              "Machine Learning",
-              "Data Analysis",
-              "Predictive Modeling",
-            ],
-            color: "primary",
-            order: 1,
-          },
-          {
-            icon: "Code2",
-            title: "Programming & Tech",
-            skills: ["Python", "RPA", "Azure", "Linux", "API Development"],
-            color: "secondary",
-            order: 2,
-          },
-          {
-            icon: "Users",
-            title: "Leadership & Strategy",
-            skills: [
-              "Strategic Planning",
-              "Team Management",
-              "Organizational Development",
-              "Project Management",
-            ],
-            color: "primary",
-            order: 3,
-          },
-          {
-            icon: "Megaphone",
-            title: "Public Speaking",
-            skills: [
-              "Conference Speaking",
-              "Workshop Facilitation",
-              "Entrepreneurship Training",
-              "Mentoring",
-            ],
-            color: "secondary",
-            order: 4,
-          },
-          {
-            icon: "Database",
-            title: "Consulting",
-            skills: [
-              "Business Strategy",
-              "Process Optimization",
-              "Digital Transformation",
-              "Innovation Management",
-            ],
-            color: "primary",
-            order: 5,
-          },
-          {
-            icon: "Cloud",
-            title: "Technology Stack",
-            skills: [
-              "Cloud Computing",
-              "Automation",
-              "Integration",
-              "Scalable Solutions",
-            ],
-            color: "secondary",
-            order: 6,
-          },
-        ]);
+        setError("Using offline data");
+        setFallbackData();
       } finally {
         setLoading(false);
       }
@@ -141,7 +157,7 @@ const SkillsSection = () => {
     <section
       id="skills"
       ref={ref}
-      className="py-8 md:py-32 relative overflow-hidden"
+      className="py-12 md:py-32 relative overflow-hidden bg-background"
     >
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/5 to-background" />
@@ -177,10 +193,10 @@ const SkillsSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }} // Always animate on mobile
           transition={{ duration: 0.8 }}
-          className="text-center mb-8 md:mb-20"
+          className="text-center mb-6 md:mb-20"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-display mb-4 md:mb-6">
             Skills & <span className="text-primary">Technologies</span>
@@ -200,11 +216,10 @@ const SkillsSection = () => {
           </div>
         )}
 
-        {/* Error State */}
-        {error && (
-          <div className="text-center py-20">
-            <p className="text-red-500 mb-4">{error}</p>
-            <p className="text-muted-foreground">Showing fallback data</p>
+        {/* Error State - Show briefly then continue */}
+        {error && loading && (
+          <div className="text-center py-8">
+            <p className="text-orange-500 mb-2 text-sm">{error}</p>
           </div>
         )}
 
@@ -213,8 +228,8 @@ const SkillsSection = () => {
           <motion.div
             variants={containerVariants}
             initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            animate="visible" // Always animate for better mobile experience
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
           >
             {skillCategories.map((category, index) => (
               <motion.div

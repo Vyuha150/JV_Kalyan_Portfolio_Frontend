@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API Debug Test</title>
+  </head>
+  <body>
+    <h1>Production API Debug Test</h1>
+    <button onclick="testProductionAPI()">Test API</button>
+    <div id="results"></div>
+
+    <script>
+      async function testProductionAPI() {
+        const API_BASE = "https://api.jvkalyan.com/api";
+        const resultsDiv = document.getElementById("results");
+
+        function log(message) {
+          console.log(message);
+          resultsDiv.innerHTML += "<p>" + message + "</p>";
+        }
+
+        resultsDiv.innerHTML = "";
+        log("🧪 Testing production API: " + API_BASE);
+
+        try {
+          // First, test if the API is reachable
+          log("\n1️⃣ Testing API health...");
+          const healthRes = await fetch(API_BASE.replace("/api", "") + "/");
+          log("Health check status: " + healthRes.status);
+          if (healthRes.ok) {
+            const healthText = await healthRes.text();
+            log("Health response: " + healthText);
+          }
+
+          // Test the auth endpoint
+          log("\n2️⃣ Testing signin endpoint...");
+          const signinRes = await fetch(API_BASE + "/auth/signin", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              email: "jvkalyan@vyuha.com",
+              password: prompt("Enter password:"), // Ask for password
+            }),
+          });
+
+          log("Signin status: " + signinRes.status);
+          log(
+            "Signin headers: " +
+              JSON.stringify(Object.fromEntries(signinRes.headers))
+          );
+
+          const signinData = await signinRes.json();
+          log("Signin response: " + JSON.stringify(signinData, null, 2));
+        } catch (error) {
+          log("❌ Test failed: " + error.message);
+        }
+      }
+    </script>
+  </body>
+</html>

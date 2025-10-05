@@ -264,18 +264,24 @@ const SkillsAdmin: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-2xl font-bold">Skills Management</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-lg sm:text-2xl font-bold">Skills Management</h2>
+          <p className="text-sm sm:text-base text-muted-foreground">
             Manage skill categories and individual skills (
             {skillCategories.length} categories)
           </p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={fetchSkillCategories} size="sm" variant="outline">
+          <Button
+            onClick={fetchSkillCategories}
+            size="sm"
+            variant="outline"
+            className="h-8 w-8 p-0 sm:h-9 sm:w-auto sm:px-3"
+          >
             <RefreshCw size={16} />
+            <span className="hidden sm:inline ml-2">Refresh</span>
           </Button>
           <Button onClick={handleAddNew} size="sm" className="gap-2">
             <Plus size={16} />
@@ -300,7 +306,7 @@ const SkillsAdmin: React.FC = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-fr">
               {skillCategories.map((category, index) => {
                 const handleEditCategory = () => handleEdit(category);
 

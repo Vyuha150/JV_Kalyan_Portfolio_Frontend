@@ -4,7 +4,7 @@ import { Building, Users, Target, Zap } from "lucide-react";
 
 const AboutSection = () => {
   const { ref, inView } = useInView({
-    threshold: 0.3,
+    threshold: 0.1, // Reduced threshold for better mobile detection
     triggerOnce: true,
   });
 
@@ -44,25 +44,29 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="about" ref={ref} className="py-8 md:py-32 relative">
+    <section
+      id="about"
+      ref={ref}
+      className="py-12 md:py-32 relative bg-background"
+    >
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/50 to-background" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }} // Always animate on mobile
           transition={{ duration: 0.8 }}
-          className="text-center mb-12 md:mb-20"
+          className="text-center mb-8 md:mb-20"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-display mb-4 md:mb-6">
             About <span className="text-primary">J V Kalyan</span>
           </h2>
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 max-w-5xl mx-auto items-center">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }} // Always animate for mobile
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
@@ -76,8 +80,8 @@ const AboutSection = () => {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }} // Always animate for mobile
               transition={{ duration: 0.8, delay: 0.4 }}
               className="space-y-6"
             >

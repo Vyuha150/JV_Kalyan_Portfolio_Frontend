@@ -154,15 +154,17 @@ const AchievementsAdmin: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Award className="h-6 w-6 text-primary" />
-              <CardTitle>Achievements Management</CardTitle>
+        <CardHeader className="pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Award className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <CardTitle className="text-lg sm:text-xl">
+                Achievements Management
+              </CardTitle>
             </div>
-            <Button onClick={handleCreate} className="gap-2">
+            <Button onClick={handleCreate} className="gap-2 w-full sm:w-auto">
               <Plus size={16} />
               Add Achievement
             </Button>
@@ -192,7 +194,7 @@ const AchievementsAdmin: React.FC = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-fr">
               {achievements.map((achievement, index) => (
                 <ItemCard
                   key={achievement._id}

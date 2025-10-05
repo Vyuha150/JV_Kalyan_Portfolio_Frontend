@@ -167,19 +167,19 @@ const ItemForm: React.FC<ItemFormProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4"
       onClick={(e) => e.target === e.currentTarget && handleClose()}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="w-full max-w-2xl max-h-[90vh] overflow-auto"
+        className="w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-auto"
       >
         <Card>
-          <CardHeader>
+          <CardHeader className="pb-3 sm:pb-6">
             <div className="flex items-center justify-between">
-              <CardTitle>{title}</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">{title}</CardTitle>
               <Button
                 variant="ghost"
                 size="sm"
@@ -191,23 +191,26 @@ const ItemForm: React.FC<ItemFormProps> = ({
             </div>
           </CardHeader>
 
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <CardContent className="pt-0">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               {/* Image upload section */}
               {fields.some((field) => field.type === "file") && (
                 <div className="space-y-2">
-                  <Label htmlFor="image">Image</Label>
-                  <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
+                  <Label htmlFor="image" className="text-sm sm:text-base">
+                    Image
+                  </Label>
+                  <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 sm:p-6 text-center">
                     {imagePreview ? (
-                      <div className="space-y-4">
+                      <div className="space-y-3 sm:space-y-4">
                         <img
                           src={imagePreview}
                           alt="Preview"
-                          className="mx-auto h-32 w-32 object-cover rounded-lg"
+                          className="mx-auto h-24 w-24 sm:h-32 sm:w-32 object-cover rounded-lg"
                         />
                         <Button
                           type="button"
                           variant="outline"
+                          size="sm"
                           onClick={() => {
                             setImagePreview(null);
                             setSelectedFile(null);
@@ -217,8 +220,8 @@ const ItemForm: React.FC<ItemFormProps> = ({
                         </Button>
                       </div>
                     ) : (
-                      <div className="space-y-4">
-                        <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground" />
+                      <div className="space-y-3 sm:space-y-4">
+                        <ImageIcon className="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-muted-foreground" />
                         <div>
                           <Label
                             htmlFor="image-upload"
@@ -227,9 +230,10 @@ const ItemForm: React.FC<ItemFormProps> = ({
                             <Button
                               type="button"
                               variant="outline"
+                              size="sm"
                               className="gap-2"
                             >
-                              <Upload size={16} />
+                              <Upload size={14} />
                               Choose Image
                             </Button>
                           </Label>
@@ -252,7 +256,10 @@ const ItemForm: React.FC<ItemFormProps> = ({
                 .filter((field) => field.type !== "file")
                 .map((field) => (
                   <div key={field.name} className="space-y-2">
-                    <Label htmlFor={field.name}>
+                    <Label
+                      htmlFor={field.name}
+                      className="text-sm sm:text-base"
+                    >
                       {field.label}
                       {field.required && (
                         <span className="text-destructive ml-1">*</span>
@@ -313,7 +320,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
                   </div>
                 ))}
 
-              <div className="flex gap-3 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
                   type="submit"
                   disabled={isLoading}
@@ -327,6 +334,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
                   variant="outline"
                   onClick={handleClose}
                   disabled={isLoading}
+                  className="sm:w-auto"
                 >
                   Cancel
                 </Button>

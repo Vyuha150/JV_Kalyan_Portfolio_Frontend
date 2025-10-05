@@ -13,15 +13,24 @@ const SignIn = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    console.log("🔐 SignIn attempt:", {
+      username: username.trim(),
+      API_BASE: import.meta.env.VITE_API_BASE_URL,
+    });
+
     const result = await signIn(username.trim(), password);
     setLoading(false);
+
     if (result.ok) {
+      console.log("✅ SignIn successful, navigating to admin");
       navigate("/admin");
     } else {
       // result is { ok: false; message }
-      setError(
-        (result as { ok: false; message: string }).message || "Signin failed"
-      );
+      const errorMessage =
+        (result as { ok: false; message: string }).message || "Signin failed";
+      console.error("❌ SignIn failed:", errorMessage);
+      setError(errorMessage);
     }
   };
 
@@ -29,7 +38,7 @@ const SignIn = () => {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="max-w-md w-full p-8 bg-card/80 backdrop-blur rounded-2xl border border-border/50 shadow-md">
         <h2 className="text-2xl font-bold mb-4">Admin Sign In</h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        <p className="text-sm text-muted-foreground mb-2">
           Enter your admin credentials to continue.
         </p>
 
@@ -66,17 +75,6 @@ const SignIn = () => {
               disabled={loading}
             >
               {loading ? "Signing in..." : "Sign In"}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                setUsername("admin");
-                setPassword("password");
-              }}
-              className="text-sm text-muted-foreground underline"
-            >
-              Fill demo creds
             </button>
           </div>
         </form>
