@@ -124,11 +124,10 @@ export interface CreateMediaData {
 }
 
 // Create axios instance with base configuration
+// Enable withCredentials so browser will send cookies (HttpOnly token cookie) with requests
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  withCredentials: true,
 });
 
 // Skills API service
@@ -253,11 +252,9 @@ export const achievementsService = {
   // Create a new achievement
   createAchievement: async (formData: FormData): Promise<Achievement> => {
     try {
-      const response = await apiClient.post("/achievements", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      // Do not set Content-Type header manually for FormData; let the browser set the correct
+      // multipart boundary. axios will pick it up automatically.
+      const response = await apiClient.post("/achievements", formData);
       return response.data;
     } catch (error) {
       console.error("Error creating achievement:", error);
@@ -271,11 +268,7 @@ export const achievementsService = {
     formData: FormData
   ): Promise<Achievement> => {
     try {
-      const response = await apiClient.put(`/achievements/${id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await apiClient.put(`/achievements/${id}`, formData);
       return response.data;
     } catch (error) {
       console.error(`Error updating achievement ${id}:`, error);
@@ -333,11 +326,7 @@ export const experiencesService = {
   // Create a new experience
   createExperience: async (formData: FormData): Promise<Experience> => {
     try {
-      const response = await apiClient.post("/experiences", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await apiClient.post("/experiences", formData);
       return response.data;
     } catch (error) {
       console.error("Error creating experience:", error);
@@ -351,11 +340,7 @@ export const experiencesService = {
     formData: FormData
   ): Promise<Experience> => {
     try {
-      const response = await apiClient.put(`/experiences/${id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await apiClient.put(`/experiences/${id}`, formData);
       return response.data;
     } catch (error) {
       console.error(`Error updating experience ${id}:`, error);
@@ -413,11 +398,7 @@ export const mediaService = {
   // Create a new media item
   createMedia: async (formData: FormData): Promise<Media> => {
     try {
-      const response = await apiClient.post("/media", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await apiClient.post("/media", formData);
       return response.data;
     } catch (error) {
       console.error("Error creating media:", error);
@@ -428,11 +409,7 @@ export const mediaService = {
   // Update a media item
   updateMedia: async (id: string, formData: FormData): Promise<Media> => {
     try {
-      const response = await apiClient.put(`/media/${id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await apiClient.put(`/media/${id}`, formData);
       return response.data;
     } catch (error) {
       console.error(`Error updating media ${id}:`, error);

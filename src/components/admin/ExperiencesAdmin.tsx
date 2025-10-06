@@ -50,7 +50,16 @@ const ExperiencesAdmin: React.FC = () => {
       label: "Icon",
       type: "select" as const,
       required: true,
-      options: ["Briefcase", "Building", "Users", "Code", "Award", "Lightbulb"],
+      options: [
+        "Briefcase",
+        "Building",
+        "Users",
+        "Award",
+        "Lightbulb",
+        "GraduationCap",
+        "Target",
+        "Star",
+      ],
     },
     {
       name: "order",
@@ -59,7 +68,14 @@ const ExperiencesAdmin: React.FC = () => {
       required: true,
       placeholder: "1",
     },
-    { name: "image", label: "Image", type: "file" as const },
+    {
+      name: "isActive",
+      label: "Active",
+      type: "select" as const,
+      required: true,
+      options: ["true", "false"],
+    },
+    { name: "image", label: "Image", type: "file" as const, required: true },
   ];
 
   // Fetch experiences from API
@@ -97,22 +113,19 @@ const ExperiencesAdmin: React.FC = () => {
   const handleSave = async (formData: FormData) => {
     try {
       if (editingItem) {
-        // Update existing experience
         await experiencesService.updateExperience(editingItem._id!, formData);
         toast({
           title: "Success",
           description: "Experience updated successfully",
         });
       } else {
-        // Create new experience
-        await experiencesService.createExperience(formData);
+        const result = await experiencesService.createExperience(formData);
         toast({
           title: "Success",
           description: "Experience created successfully",
         });
       }
 
-      // Refresh the list
       await fetchExperiences();
     } catch (error) {
       console.error("Error saving experience:", error);

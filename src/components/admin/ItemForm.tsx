@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Save, X, Upload, Image as ImageIcon } from "lucide-react";
+import { Save, X, Upload, ImageIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,15 +52,6 @@ const ItemForm: React.FC<ItemFormProps> = ({
   fields,
   title,
 }) => {
-  // Debug incoming props
-  console.debug(
-    "ItemForm props => item:",
-    item,
-    "fields:",
-    fields,
-    "isOpen:",
-    isOpen
-  );
   const makeInitialData = React.useCallback(() => {
     const initialData: Record<string, string | number | boolean> = {};
     fields.forEach((field) => {
@@ -79,7 +70,12 @@ const ItemForm: React.FC<ItemFormProps> = ({
           }
         }
       } else {
-        initialData[field.name] = field.type === "number" ? 0 : "";
+        // Set default values for new items
+        if (field.name === "isActive") {
+          initialData[field.name] = true; // Default new experiences to active
+        } else {
+          initialData[field.name] = field.type === "number" ? 0 : "";
+        }
       }
     });
     return initialData;
@@ -100,7 +96,6 @@ const ItemForm: React.FC<ItemFormProps> = ({
     setFormData(initial);
     setSelectedFile(null);
     setImagePreview(item?.image || null);
-    console.debug("ItemForm: initial formData ->", initial);
   }, [item, isOpen, fields, makeInitialData]);
 
   const handleInputChange = (
@@ -127,6 +122,27 @@ const ItemForm: React.FC<ItemFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate required fields
+    const missingFields = fields
+      .filter((field) => field.required)
+      .filter((field) => {
+        if (field.type === "file") {
+          // For file fields, check if a file is selected
+          return !selectedFile;
+        } else {
+          const value = formData[field.name];
+          return value === null || value === undefined || value === "";
+        }
+      })
+      .map((field) => field.label);
+
+    if (missingFields.length > 0) {
+      console.error("Missing required fields:", missingFields);
+      alert(`Please fill in all required fields: ${missingFields.join(", ")}`);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -135,7 +151,23 @@ const ItemForm: React.FC<ItemFormProps> = ({
       // Add all form fields
       Object.entries(formData).forEach(([key, value]) => {
         if (value !== null && value !== undefined) {
-          submitFormData.append(key, value.toString());
+          // Find the field configuration to determine the type
+          const fieldConfig = fields.find((f) => f.name === key);
+          let processedValue = value;
+
+          if (
+            fieldConfig?.type === "select" &&
+            fieldConfig.options?.includes("true") &&
+            fieldConfig.options?.includes("false")
+          ) {
+            // Convert string boolean to actual boolean
+            processedValue = value === "true";
+          } else if (fieldConfig?.type === "number") {
+            // Convert string number to actual number
+            processedValue = Number(value);
+          }
+
+          submitFormData.append(key, processedValue.toString());
         }
       });
 
@@ -148,6 +180,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
       handleClose();
     } catch (error) {
       console.error("Error saving item:", error);
+      throw error; // Re-throw to prevent form from closing
     } finally {
       setIsLoading(false);
     }
@@ -232,6 +265,12 @@ const ItemForm: React.FC<ItemFormProps> = ({
                               variant="outline"
                               size="sm"
                               className="gap-2"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                document
+                                  .getElementById("image-upload")
+                                  ?.click();
+                              }}
                             >
                               <Upload size={14} />
                               Choose Image
