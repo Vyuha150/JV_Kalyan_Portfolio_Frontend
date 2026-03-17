@@ -1,31 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { checkAuth } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 
 interface Props {
   children: React.ReactElement;
 }
 
 const AdminRoute = ({ children }: Props) => {
-  const [loading, setLoading] = useState(true);
-  const [authed, setAuthed] = useState(false);
+  const { isLoading, isAuthed } = useAuth();
 
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      const ok = await checkAuth();
-      if (mounted) {
-        setAuthed(ok);
-        setLoading(false);
-      }
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-sm text-muted-foreground">Checking session...</p>
+      </div>
+    );
+  }
 
-  if (loading) return null; // or a spinner
-  if (!authed) return <Navigate to="/admin/login" replace />;
+  if (!isAuthed) return <Navigate to="/admin/login" replace />;
   return children;
 };
 

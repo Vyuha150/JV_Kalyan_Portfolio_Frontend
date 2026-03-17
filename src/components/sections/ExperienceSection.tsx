@@ -3,6 +3,7 @@ import { useInView } from "react-intersection-observer";
 import { Building, Users, Lightbulb, GraduationCap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { experiencesService, Experience } from "../../services/api";
+import { toBackendAssetUrl } from "@/lib/apiConfig";
 
 const ExperienceSection = () => {
   const { ref, inView } = useInView({
@@ -33,53 +34,7 @@ const ExperienceSection = () => {
       } catch (err) {
         console.error("Failed to fetch experiences data:", err);
         setError("Failed to load experiences data");
-        // Fallback to hardcoded data if API fails
-        setExperiences([
-          {
-            year: "2023 – Present",
-            role: "Founder",
-            organization: "Vyuha",
-            description:
-              "Leading a student-led innovation movement with 1500+ empowered members",
-            image: "/lovable-uploads/74f430d5-8e2d-4be6-8fff-cdb0aa77c8c6.png",
-            icon: "Lightbulb",
-            order: 1,
-            isActive: true,
-          },
-          {
-            year: "2022 – Present",
-            role: "Vice President",
-            organization: "KL SAC",
-            description:
-              "Strategic leadership in student affairs and community development",
-            image: "/lovable-uploads/ec378be5-3472-4f11-a063-4b863707624f.png",
-            icon: "Building",
-            order: 2,
-            isActive: true,
-          },
-          {
-            year: "2023–2024",
-            role: "IIC Convener",
-            organization: "Innovation & Incubation Cell",
-            description:
-              "Fostering entrepreneurship and innovation among students",
-            image: "/lovable-uploads/2f095c44-3825-450f-93df-96413c20c8d3.png",
-            icon: "Users",
-            order: 3,
-            isActive: true,
-          },
-          {
-            year: "2021–2022",
-            role: "Student",
-            organization: "AI & DS @ KL University",
-            description:
-              "Specialized in Artificial Intelligence and Data Science",
-            image: "/lovable-uploads/4824763f-1eb6-4a9a-83bd-0f9dfac722a9.png",
-            icon: "GraduationCap",
-            order: 4,
-            isActive: true,
-          },
-        ]);
+        setExperiences([]);
       } finally {
         setLoading(false);
       }
@@ -90,24 +45,7 @@ const ExperienceSection = () => {
 
   // Helper function to get full image URL
   const getImageUrl = (imagePath: string) => {
-    if (imagePath.startsWith("/uploads/")) {
-      // This is a backend uploaded image
-      let backendUrl =
-        import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
-
-      // If someone set the backend URL without protocol (e.g. api.jvkalyan.com/api), add https:// by default
-      if (!/^https?:\/\//i.test(backendUrl)) {
-        backendUrl = `https://${backendUrl}`;
-      }
-
-      // Remove a single trailing '/api' segment if present (only at the end)
-      backendUrl = backendUrl.replace(/\/api\/?$/i, "");
-
-      // Ensure no double slashes when concatenating
-      return `${backendUrl}${imagePath}`;
-    }
-    // This is a frontend public image (fallback)
-    return imagePath;
+    return toBackendAssetUrl(imagePath);
   };
 
   return (
@@ -141,7 +79,7 @@ const ExperienceSection = () => {
         {error && (
           <div className="text-center py-20">
             <p className="text-red-500 mb-4">{error}</p>
-            <p className="text-muted-foreground">Showing fallback data</p>
+            <p className="text-muted-foreground">Please try again later.</p>
           </div>
         )}
 

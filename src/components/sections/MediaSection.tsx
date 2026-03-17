@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { mediaService, Media } from "../../services/api";
+import { toBackendAssetUrl } from "@/lib/apiConfig";
 
 const MediaSection = () => {
   const { ref, inView } = useInView({
@@ -46,53 +47,7 @@ const MediaSection = () => {
       } catch (err) {
         console.error("Failed to fetch media data:", err);
         setError("Failed to load media data");
-        // Fallback to hardcoded data if API fails
-        setMediaItems([
-          {
-            image: "/lovable-uploads/9b07a4a2-48f6-452f-9c84-fbae4d7172ec.png",
-            title: "Podcast with Pemmasani Chandra Shekhar",
-            description:
-              "Engaging conversation with Guntur MP on leadership and governance",
-            type: "Podcast",
-            icon: "Mic",
-            link: "https://youtu.be/sZ8u-TqG6Tw?si=fEWXtRAtEbibvDnM",
-            order: 1,
-            isActive: true,
-          },
-          {
-            image: "/lovable-uploads/36a177f7-a42b-4560-9f6a-f7c0031f7791.png",
-            title: "SWEEP Electoral Education Event",
-            description:
-              "Speaking at systematic voters education and electoral participation program",
-            type: "Speaking",
-            icon: "Camera",
-            link: "https://www.instagram.com/reel/C6FYmBNIEi_/?igsh=MTJ6dHM1aXVzZXJzbA==",
-            order: 2,
-            isActive: true,
-          },
-          {
-            image: "/lovable-uploads/ff5d922c-4190-454f-b4a8-250dfd2100ec.png",
-            title: "Leadership Content Creation",
-            description:
-              "Creating engaging content on youth empowerment and innovation",
-            type: "Content",
-            icon: "Award",
-            link: "https://www.instagram.com/reel/C62kktFrqyA/?igsh=MWxvbnp0djBnbjZ3cg==",
-            order: 3,
-            isActive: true,
-          },
-          {
-            image: "/lovable-uploads/e9bb5b4a-5e48-47e1-8f41-452a858222d3.png",
-            title: "Panel Discussion Leadership",
-            description:
-              "Leading strategic discussions on innovation and community development",
-            type: "Panel",
-            icon: "Mic",
-            link: "https://www.instagram.com/reel/C6YvX4MNkwE/?igsh=MXYyYzM5dXhvZm5xaw==",
-            order: 4,
-            isActive: true,
-          },
-        ]);
+        setMediaItems([]);
       } finally {
         setLoading(false);
       }
@@ -103,24 +58,7 @@ const MediaSection = () => {
 
   // Helper function to get full image URL
   const getImageUrl = (imagePath: string) => {
-    if (imagePath.startsWith("/uploads/")) {
-      // This is a backend uploaded image
-      let backendUrl =
-        import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
-
-      // If someone set the backend URL without protocol (e.g. api.jvkalyan.com/api), add https:// by default
-      if (!/^https?:\/\//i.test(backendUrl)) {
-        backendUrl = `https://${backendUrl}`;
-      }
-
-      // Remove a single trailing '/api' segment if present (only at the end)
-      backendUrl = backendUrl.replace(/\/api\/?$/i, "");
-
-      // Ensure no double slashes when concatenating
-      return `${backendUrl}${imagePath}`;
-    }
-    // This is a frontend public image (fallback)
-    return imagePath;
+    return toBackendAssetUrl(imagePath);
   };
 
   return (
@@ -157,7 +95,7 @@ const MediaSection = () => {
         {error && (
           <div className="text-center py-20">
             <p className="text-red-500 mb-4">{error}</p>
-            <p className="text-muted-foreground">Showing fallback data</p>
+            <p className="text-muted-foreground">Please try again later.</p>
           </div>
         )}
 

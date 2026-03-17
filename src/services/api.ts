@@ -1,7 +1,11 @@
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/apiConfig";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+let unauthorizedHandler: (() => void) | null = null;
+
+export const setUnauthorizedHandler = (handler: (() => void) | null) => {
+  unauthorizedHandler = handler;
+};
 
 // Type definitions
 export interface SkillCategory {
@@ -123,12 +127,38 @@ export interface CreateMediaData {
   order: number;
 }
 
+export interface ContactQuery {
+  _id: string;
+  name: string;
+  email: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateContactQueryData {
+  name: string;
+  email: string;
+  message: string;
+}
+
 // Create axios instance with base configuration
 // Enable withCredentials so browser will send cookies (HttpOnly token cookie) with requests
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
 });
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error?.response?.status === 401) {
+      unauthorizedHandler?.();
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Skills API service
 export const skillsService = {
@@ -227,9 +257,13 @@ export const skillsService = {
 // Achievements API service
 export const achievementsService = {
   // Get all achievements
-  getAllAchievements: async (): Promise<Achievement[]> => {
+  getAllAchievements: async (
+    includeInactive = false
+  ): Promise<Achievement[]> => {
     try {
-      const response = await apiClient.get("/achievements");
+      const response = await apiClient.get("/achievements", {
+        params: includeInactive ? { includeInactive: true } : undefined,
+      });
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -302,9 +336,11 @@ export const achievementsService = {
 // Experiences API service
 export const experiencesService = {
   // Get all experiences
-  getAllExperiences: async (): Promise<Experience[]> => {
+  getAllExperiences: async (includeInactive = false): Promise<Experience[]> => {
     try {
-      const response = await apiClient.get("/experiences");
+      const response = await apiClient.get("/experiences", {
+        params: includeInactive ? { includeInactive: true } : undefined,
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching experiences:", error);
@@ -374,9 +410,11 @@ export const experiencesService = {
 // Media API service
 export const mediaService = {
   // Get all media items
-  getAllMedia: async (): Promise<Media[]> => {
+  getAllMedia: async (includeInactive = false): Promise<Media[]> => {
     try {
-      const response = await apiClient.get("/media");
+      const response = await apiClient.get("/media", {
+        params: includeInactive ? { includeInactive: true } : undefined,
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching media:", error);
@@ -437,6 +475,31 @@ export const mediaService = {
       console.error(`Error deactivating media ${id}:`, error);
       throw error;
     }
+  },
+};
+
+// Contact queries API service
+export const contactsService = {
+  submitContactQuery: async (
+    payload: CreateContactQueryData
+  ): Promise<ContactQuery> => {
+    const response = await apiClient.post("/contacts", payload);
+    return response.data?.query ?? response.data;
+  },
+
+  getAllContactQueries: async (): Promise<ContactQuery[]> => {
+    const response = await apiClient.get("/contacts");
+    return Array.isArray(response.data) ? response.data : [];
+  },
+
+  markContactQueryRead: async (id: string): Promise<ContactQuery> => {
+    const response = await apiClient.patch(`/contacts/${id}/read`);
+    return response.data;
+  },
+
+  deleteContactQuery: async (id: string) => {
+    const response = await apiClient.delete(`/contacts/${id}`);
+    return response.data;
   },
 };
 

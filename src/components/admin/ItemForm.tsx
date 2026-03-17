@@ -128,8 +128,8 @@ const ItemForm: React.FC<ItemFormProps> = ({
       .filter((field) => field.required)
       .filter((field) => {
         if (field.type === "file") {
-          // For file fields, check if a file is selected
-          return !selectedFile;
+          // For required file fields, allow existing image on edit, but require upload on create.
+          return Boolean(field.required) && !selectedFile && !imagePreview;
         } else {
           const value = formData[field.name];
           return value === null || value === undefined || value === "";
@@ -160,8 +160,9 @@ const ItemForm: React.FC<ItemFormProps> = ({
             fieldConfig.options?.includes("true") &&
             fieldConfig.options?.includes("false")
           ) {
-            // Convert string boolean to actual boolean
-            processedValue = value === "true";
+            // Convert both string and boolean inputs to canonical boolean.
+            processedValue =
+              typeof value === "boolean" ? value : value === "true";
           } else if (fieldConfig?.type === "number") {
             // Convert string number to actual number
             processedValue = Number(value);

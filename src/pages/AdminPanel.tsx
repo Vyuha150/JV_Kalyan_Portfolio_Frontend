@@ -6,6 +6,7 @@ import AchievementsAdmin from "@/components/admin/AchievementsAdmin";
 import ExperiencesAdmin from "@/components/admin/ExperiencesAdmin";
 import MediaAdmin from "@/components/admin/MediaAdmin";
 import SkillsAdmin from "@/components/admin/SkillsAdmin";
+import ContactsAdmin from "@/components/admin/ContactsAdmin";
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState("achievements");
@@ -25,7 +26,7 @@ const AdminPanel = () => {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-0 h-auto p-1">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 gap-1 sm:gap-0 h-auto p-1">
               <TabsTrigger
                 value="achievements"
                 className="gap-1 sm:gap-2 text-xs sm:text-sm py-2"
@@ -52,6 +53,12 @@ const AdminPanel = () => {
               >
                 Skills
               </TabsTrigger>
+              <TabsTrigger
+                value="contacts"
+                className="gap-1 sm:gap-2 text-xs sm:text-sm py-2"
+              >
+                Contacts
+              </TabsTrigger>
             </TabsList>
 
             <div className="mt-4 sm:mt-8">
@@ -69,6 +76,10 @@ const AdminPanel = () => {
 
               <TabsContent value="skills" className="mt-0">
                 <SkillsAdmin />
+              </TabsContent>
+
+              <TabsContent value="contacts" className="mt-0">
+                <ContactsAdmin />
               </TabsContent>
             </div>
           </Tabs>

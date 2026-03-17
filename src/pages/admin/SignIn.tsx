@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signIn } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
@@ -8,28 +8,22 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    console.log("🔐 SignIn attempt:", {
-      username: username.trim(),
-      API_BASE: import.meta.env.VITE_API_BASE_URL,
-    });
-
-    const result = await signIn(username.trim(), password);
+    const result = await login(username.trim(), password);
     setLoading(false);
 
     if (result.ok) {
-      console.log("✅ SignIn successful, navigating to admin");
-      navigate("/admin");
+      navigate("/admin", { replace: true });
     } else {
       // result is { ok: false; message }
       const errorMessage =
         (result as { ok: false; message: string }).message || "Signin failed";
-      console.error("❌ SignIn failed:", errorMessage);
       setError(errorMessage);
     }
   };

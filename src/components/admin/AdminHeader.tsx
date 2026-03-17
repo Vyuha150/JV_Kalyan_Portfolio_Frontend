@@ -2,7 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Settings, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface AdminHeaderProps {
   title?: string;
@@ -11,11 +12,13 @@ interface AdminHeaderProps {
 const AdminHeader: React.FC<AdminHeaderProps> = ({
   title = "Admin Dashboard",
 }) => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    // Call backend signout to clear HttpOnly cookie then redirect to login
     (async () => {
-      await signOut();
-      window.location.href = "/admin/login";
+      await logout();
+      navigate("/admin/login", { replace: true });
     })();
   };
 

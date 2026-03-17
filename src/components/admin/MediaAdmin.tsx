@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { mediaService, Media } from "@/services/api";
+import { toBackendAssetUrl } from "@/lib/apiConfig";
 import ItemCard from "./ItemCard";
 import ItemForm from "./ItemForm";
 
@@ -77,14 +78,14 @@ const MediaAdmin: React.FC = () => {
       required: true,
       placeholder: "1",
     },
-    { name: "image", label: "Image", type: "file" as const },
+    { name: "image", label: "Image", type: "file" as const, required: true },
   ];
 
   // Fetch media items from API
   const fetchMediaItems = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await mediaService.getAllMedia();
+      const data = await mediaService.getAllMedia(true);
       setMediaItems(data);
     } catch (error) {
       console.error("Error fetching media:", error);
@@ -166,23 +167,7 @@ const MediaAdmin: React.FC = () => {
   };
 
   const getImageUrl = (imagePath: string) => {
-    if (imagePath?.startsWith("/uploads/")) {
-      let backendUrl =
-        import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
-
-      // If someone set the backend URL without protocol (e.g. api.jvkalyan.com/api), add https:// by default
-      if (!/^https?:\/\//i.test(backendUrl)) {
-        backendUrl = `https://${backendUrl}`;
-      }
-
-      // Remove a single trailing '/api' segment if present (only at the end)
-      backendUrl = backendUrl.replace(/\/api\/?$/i, "");
-
-      // Ensure no double slashes when concatenating
-      return `${backendUrl}${imagePath}`;
-    }
-    // This is a frontend public image (fallback)
-    return imagePath;
+    return toBackendAssetUrl(imagePath);
   };
 
   return (

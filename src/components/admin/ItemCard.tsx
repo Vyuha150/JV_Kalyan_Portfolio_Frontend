@@ -4,6 +4,7 @@ import { Edit, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toBackendAssetUrl } from "@/lib/apiConfig";
 
 interface ItemCardProps {
   item: {
@@ -49,13 +50,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
   };
 
   const defaultGetImageUrl = (imagePath: string) => {
-    if (imagePath?.startsWith("/uploads/")) {
-      const backendUrl =
-        import.meta.env.VITE_API_BASE_URL?.replace("/api", "") ||
-        "http://localhost:5000";
-      return `${backendUrl}${imagePath}`;
-    }
-    return imagePath;
+    return toBackendAssetUrl(imagePath);
   };
 
   const imageUrl = getImageUrl

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { experiencesService, Experience } from "@/services/api";
+import { toBackendAssetUrl } from "@/lib/apiConfig";
 import ItemCard from "./ItemCard";
 import ItemForm from "./ItemForm";
 
@@ -82,7 +83,7 @@ const ExperiencesAdmin: React.FC = () => {
   const fetchExperiences = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await experiencesService.getAllExperiences();
+      const data = await experiencesService.getAllExperiences(true);
       setExperiences(data);
     } catch (error) {
       console.error("Error fetching experiences:", error);
@@ -161,23 +162,7 @@ const ExperiencesAdmin: React.FC = () => {
   };
 
   const getImageUrl = (imagePath: string) => {
-    if (imagePath?.startsWith("/uploads/")) {
-      // This is a backend uploaded image
-      let backendUrl =
-        import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
-
-      // If someone set the backend URL without protocol (e.g. api.jvkalyan.com/api), add https:// by default
-      if (!/^https?:\/\//i.test(backendUrl)) {
-        backendUrl = `https://${backendUrl}`;
-      }
-
-      // Remove a single trailing '/api' segment if present (only at the end)
-      backendUrl = backendUrl.replace(/\/api\/?$/i, "");
-
-      // Ensure no double slashes when concatenating
-      return `${backendUrl}${imagePath}`;
-    }
-    return imagePath;
+    return toBackendAssetUrl(imagePath);
   };
 
   return (

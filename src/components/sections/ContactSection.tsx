@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { contactsService } from "@/services/api";
 
 const ContactSection = () => {
   const { ref, inView } = useInView({
@@ -48,11 +49,7 @@ const ContactSection = () => {
     setSubmitStatus("idle");
 
     try {
-      // Simulate API call - replace with actual form submission logic
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // For now, just log the form data (replace with actual API call)
-      console.log("Form submitted:", formData);
+      await contactsService.submitContactQuery(formData);
 
       // Success state
       setSubmitStatus("success");
