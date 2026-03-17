@@ -21,14 +21,14 @@ const TestimonialsSection = () => {
       role: "Member of Parliament, Guntur",
       content: "Working with Kalyan on youth empowerment initiatives has been inspiring. His vision for connecting students with experts is remarkable.",
       rating: 5,
-      image: "/lovable-uploads/2f095c44-3825-450f-93df-96413c20c8d3.png"
+      image: "/pemmasani.jpg"
     },
     {
-      name: "Prof. Sarah Williams",
-      role: "Dean, KL University",
+      name: "Dr. M Bapuji",
+      role: "CSIR",
       content: "As founder of Vyuha, Kalyan has created an ecosystem that bridges academic excellence with real-world impact. His approach to student empowerment is revolutionary.",
       rating: 5,
-      image: "/lovable-uploads/4824763f-1eb6-4a9a-83bd-0f9dfac722a9.png"
+      image: "/bapuji.jpg"
     }
   ];
 

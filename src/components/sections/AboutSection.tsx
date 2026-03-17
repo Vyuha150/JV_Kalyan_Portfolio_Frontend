@@ -19,30 +19,6 @@ const AboutSection = () => {
     { icon: <Zap size={24} />, value: "10+", label: "Tech Projects" },
   ];
 
-  const philosophyCards = [
-    {
-      icon: <Target size={32} />,
-      title: "Vision",
-      subtitle: "Empowering Young Minds",
-      description:
-        "Building tech-enabled ecosystems that provide students and youth with the tools, knowledge, and opportunities to create meaningful impact in their communities.",
-    },
-    {
-      icon: <Zap size={32} />,
-      title: "Approach",
-      subtitle: "Strategy, Innovation, Execution",
-      description:
-        "Combining strategic thinking with cutting-edge technology and hands-on execution to deliver solutions that scale and create lasting change.",
-    },
-    {
-      icon: <Users size={32} />,
-      title: "Impact",
-      subtitle: "Community, Tech, Education",
-      description:
-        "Fostering collaborative environments where technology meets education to empower the next generation of leaders and innovators.",
-    },
-  ];
-
   return (
     <section
       id="about"
@@ -155,52 +131,7 @@ const AboutSection = () => {
           ))}
         </motion.div>
 
-        {/* Philosophy Cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mb-16"
-        >
-          <h3 className="text-3xl font-bold text-center mb-12 font-display">
-            Vision & Philosophy
-          </h3>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {philosophyCards.map((card, index) => (
-              <motion.div
-                key={card.title}
-                initial={{ opacity: 0, y: 50 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.5 + index * 0.2 }}
-                className="card-glass p-8 transition-all duration-500 group"
-                style={{
-                  transition: "all 0.5s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow =
-                    "var(--shadow-card), var(--shadow-glow-primary)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = "var(--shadow-card)";
-                }}
-              >
-                <div className="text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
-                  {card.icon}
-                </div>
-                <h4 className="text-xl font-bold mb-2 text-foreground">
-                  {card.title}
-                </h4>
-                <h5 className="text-primary font-medium mb-4">
-                  {card.subtitle}
-                </h5>
-                <p className="text-muted-foreground leading-relaxed">
-                  {card.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        {/* Vision & Philosophy moved to its own section for improved ordering */}
 
         {/* Professional Journey */}
         <motion.div

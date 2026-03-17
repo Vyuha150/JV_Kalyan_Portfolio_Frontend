@@ -10,6 +10,7 @@ import {
   Calendar,
   Camera,
   Mail,
+  Sparkles,
 } from "lucide-react";
 
 interface NavItem {
@@ -23,10 +24,16 @@ const navItems: NavItem[] = [
   { id: "home", icon: <Home size={20} />, label: "Home", href: "#home" },
   { id: "about", icon: <User size={20} />, label: "About", href: "#about" },
   {
-    id: "skills",
-    icon: <Briefcase size={20} />,
-    label: "Skills",
-    href: "#skills",
+    id: "media",
+    icon: <Camera size={20} />,
+    label: "Leadership Talks",
+    href: "#media",
+  },
+  {
+    id: "experience",
+    icon: <Calendar size={20} />,
+    label: "Experience",
+    href: "#experience",
   },
   {
     id: "achievements",
@@ -35,12 +42,17 @@ const navItems: NavItem[] = [
     href: "#achievements",
   },
   {
-    id: "experience",
-    icon: <Calendar size={20} />,
-    label: "Experience",
-    href: "#experience",
+    id: "vision",
+    icon: <Sparkles size={20} />,
+    label: "Vision",
+    href: "#vision",
   },
-  { id: "media", icon: <Camera size={20} />, label: "Media", href: "#media" },
+  {
+    id: "skills",
+    icon: <Briefcase size={20} />,
+    label: "Skills",
+    href: "#skills",
+  },
   {
     id: "contact",
     icon: <Mail size={20} />,
